@@ -63,9 +63,6 @@ public class HopperTransfer implements Listener {
             if (!isCraftable(recipe, destination)) continue;
             make(recipe, destination);
 
-            //debug
-            System.out.println("made");
-
             if (Util.isNullOrAir(destination.getItem(placeSlot))) {
                 destination.setItem(placeSlot, recipe.getResult());
             } else {

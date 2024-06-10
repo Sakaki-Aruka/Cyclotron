@@ -2,6 +2,7 @@ package com.github.aruka.cyclotron;
 
 import com.github.aruka.cyclotron.command.Filter;
 
+import com.github.aruka.cyclotron.listener.ContainerBreak;
 import com.github.aruka.cyclotron.listener.ContainerClick;
 import com.github.aruka.cyclotron.listener.HopperTransfer;
 import org.bukkit.Bukkit;
@@ -60,6 +61,7 @@ public final class Cyclotron extends JavaPlugin {
         getCommand("filter").setTabCompleter(new Filter());
         getServer().getPluginManager().registerEvents(new ContainerClick(), this);
         getServer().getPluginManager().registerEvents(new HopperTransfer(), this);
+        getServer().getPluginManager().registerEvents(new ContainerBreak(), this);
         getAllCraftingNamespace();
     }
 

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +47,16 @@ public class Filter implements CommandExecutor, TabCompleter {
             sender.sendMessage("You can not register this item.");
             return false;
         }
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                UUID uuid = ((Player) sender).getUniqueId();
+                FILTER_QUERY_KIND.remove(uuid);
+                FILTER_QUERIES.remove(uuid);
+            }
+        }.runTaskLater(Cyclotron.INSTANCE, Cyclotron.CLICK_EXPIRE_DURATION * 20);
 
         FILTER_QUERY_KIND.put(((Player) sender).getUniqueId(), args[0].toLowerCase());
         FILTER_QUERIES.put(((Player) sender).getUniqueId(), args[1].toLowerCase());

@@ -55,7 +55,6 @@ public class ContainerClick implements Listener {
     }
 
 
-
     private void register(Block container, Player player) {
         String query = Filter.FILTER_QUERIES.get(player.getUniqueId());
 

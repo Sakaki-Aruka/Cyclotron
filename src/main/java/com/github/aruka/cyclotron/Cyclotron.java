@@ -24,6 +24,7 @@ public final class Cyclotron extends JavaPlugin {
     public static Set<String> ALL_CRAFTING_RECIPES_NAMESPACE = new HashSet<>();
     public static Map<String, Recipe> NAME_RECIPE_MAP = new HashMap<>();
     public static Cyclotron INSTANCE;
+    public static final int CLICK_EXPIRE_DURATION = 60; // seconds
 
     public static int FILTER_LIMIT = 5;
     public static final String CyclotronKey = "CyclotronJsonData";

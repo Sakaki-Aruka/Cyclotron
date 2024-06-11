@@ -7,12 +7,12 @@
  
 # Commands
 for all players
-- `/filter <register | unregister> <recipe name>`
+- `/cyclotron <register | unregister> <recipe name>`
   - Register / unregister the specified recipe.
-- `/filter info`
+- `/cyclotron info`
   - Show recipes what are registered to the specified block.
 ---
 
 for admin (permission `cyclotron.clear`)
-- `/filter clear`
+- `/cyclotron clear`
   - Clear all data what are registered to the specified block.

@@ -58,8 +58,8 @@ public final class Cyclotron extends JavaPlugin {
         saveConfig();
         readConfig();
         setInstance();
-        getCommand("filter").setExecutor(new Filter());
-        getCommand("filter").setTabCompleter(new Filter());
+        getCommand("cyclotron").setExecutor(new Filter());
+        getCommand("cyclotron").setTabCompleter(new Filter());
         getServer().getPluginManager().registerEvents(new ContainerClick(), this);
         getServer().getPluginManager().registerEvents(new HopperTransfer(), this);
         getServer().getPluginManager().registerEvents(new ContainerBreak(), this);

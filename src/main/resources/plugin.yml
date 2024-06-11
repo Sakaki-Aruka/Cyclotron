@@ -5,9 +5,9 @@ api-version: '1.20'
 authors: [Aruka]
 description: "\"cyclotron\" is a simple auto crafter what runs on chests."
 commands:
-  filter:
+  cyclotron:
     description: "(Un)Register and see recipes command."
-    usage: "'/filter <register | unregister> <Result Item ID>' or '/filter info'"
+    usage: "'/cyclotron <register | unregister> <Result Item ID>' or '/filter info'"
     permission: cyclotron.default
 
 permissions:

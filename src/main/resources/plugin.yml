@@ -16,3 +16,9 @@ permissions:
 
   cyclotron.clear:
     default: op
+
+  cyclotron.reload:
+    default: op
+
+  cyclotron.change_recipes_limit:
+    default: op

@@ -8,7 +8,6 @@ import com.github.aruka.cyclotron.listener.HopperTransfer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,8 +55,8 @@ public final class Cyclotron extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         saveConfig();
-        readConfig();
         setInstance();
+        SettingsLoad.readConfig();
         getCommand("cyclotron").setExecutor(new Filter());
         getCommand("cyclotron").setTabCompleter(new Filter());
         getServer().getPluginManager().registerEvents(new ContainerClick(), this);
@@ -75,10 +74,6 @@ public final class Cyclotron extends JavaPlugin {
         INSTANCE = this;
     }
 
-    private void readConfig() {
-        FileConfiguration config = getConfig();
-        FILTER_LIMIT = config.contains("filters") ? config.getInt("filters") : 5;
-    }
 
     private void getAllCraftingNamespace() {
         Iterator<Recipe> allRecipes = Bukkit.recipeIterator();

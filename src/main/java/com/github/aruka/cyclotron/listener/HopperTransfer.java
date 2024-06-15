@@ -36,11 +36,16 @@ public class HopperTransfer implements Listener {
     @EventHandler
     public void hopperTransfer(InventoryMoveItemEvent event) {
         Location to = event.getDestination().getLocation();
-        if (to == null || !Cyclotron.CARGO_CONTAINER.contains(to.getBlock().getType())) return;
+        if (event.isCancelled() || to == null || !Cyclotron.CARGO_CONTAINER.contains(to.getBlock().getType())) return;
         Block block = to.getBlock();
         if (!block.hasMetadata(Cyclotron.CyclotronKey)) return;
         Inventory destination = event.getDestination();
 
+        if (!anyCraftable(block, destination)) return;
+        loop(block, destination);
+    }
+
+    static void loop(Block block, Inventory inventory) {
         int startIndex = getRecipeIndex(block);
         if (!block.hasMetadata(Cyclotron.CyclotronIndexKey)) {
             Util.replaceMetadataSpecifiedKey(block, Cyclotron.CyclotronIndexKey, new FixedMetadataValue(Cyclotron.INSTANCE, 0));
@@ -50,10 +55,11 @@ public class HopperTransfer implements Listener {
         if (preRecipes == null || preRecipes.length == 0) return;
         String[] recipes = Util.getAvailableRecipes(preRecipes);
         if (recipes.length == 0) return;
-        core(recipes, startIndex, destination, block);
+        Util.replaceMetadataSpecifiedKey(block, Cyclotron.CyclotronIndexKey, new FixedMetadataValue(Cyclotron.INSTANCE, (startIndex + 1) % recipes.length));
+        core(recipes, (startIndex + 1) % recipes.length , inventory, block);
     }
 
-    private void core(String[] recipes, int startIndex, Inventory destination, Block block) {
+    private static void core(String[] recipes, int startIndex, Inventory destination, Block block) {
         for (int i = startIndex; i < startIndex + recipes.length; i++) {
             int index = i % recipes.length;
             CraftingRecipe recipe = (CraftingRecipe) Cyclotron.NAME_RECIPE_MAP.get(recipes[index]);
@@ -77,9 +83,25 @@ public class HopperTransfer implements Listener {
         int nextIndex = (startIndex + 1) % recipes.length;
         Util.replaceMetadataSpecifiedKey(block, Cyclotron.CyclotronIndexKey, new FixedMetadataValue(Cyclotron.INSTANCE, nextIndex));
         Util.doubleChest(block);
+
+        if (anyCraftable(block, destination)) {
+            loop(block, destination);
+        }
     }
 
-    private void make(Recipe recipe, Inventory inventory) {
+    private static boolean anyCraftable(Block block, Inventory inventory) {
+        if (!Util.isCyclotronCargo(block)) return false;
+        String[] preRecipes = Util.getHeldData(block);
+        if (preRecipes == null || preRecipes.length == 0) return false;
+        String[] recipes = Util.getAvailableRecipes(preRecipes);
+        for (String r : recipes) {
+            Recipe recipe = Cyclotron.NAME_RECIPE_MAP.get(r);
+            if (isCraftable(recipe, inventory)) return true;
+        }
+        return false;
+    }
+
+    private static void make(Recipe recipe, Inventory inventory) {
         Map<RecipeChoice, Integer> flat = flatten(recipe);
         Iterator<ItemStack> iterator = inventory.iterator();
         while (iterator.hasNext()) {
@@ -100,7 +122,7 @@ public class HopperTransfer implements Listener {
     }
 
 
-    private int getFirstPlacableSlot(ItemStack result, Inventory inventory) {
+    private static int getFirstPlacableSlot(ItemStack result, Inventory inventory) {
         if (NULL_OR_AIR.test(result)) return -1;
         if (inventory.first(result.getType()) == -1) return inventory.firstEmpty();
         List<Integer> slots = new ArrayList<>(inventory.all(result.getType()).keySet());
@@ -116,7 +138,7 @@ public class HopperTransfer implements Listener {
         return inventory.firstEmpty();
     }
 
-    private boolean isCraftable(Recipe recipe, Inventory inventory) {
+    private static boolean isCraftable(Recipe recipe, Inventory inventory) {
         Map<ItemStack, Integer> relation = getRelation(inventory);
         Map<RecipeChoice, Integer> flat = flatten(recipe);
         Set<RecipeChoice> passed = new HashSet<>();
@@ -133,7 +155,7 @@ public class HopperTransfer implements Listener {
     }
 
 
-    private Map<ItemStack, Integer> getRelation(Inventory inventory) {
+    private static Map<ItemStack, Integer> getRelation(Inventory inventory) {
         Map<ItemStack, Integer> result = new HashMap<>();
         for (ItemStack item : inventory.getContents()) {
             if (Util.isNullOrAir(item)) continue;
@@ -144,7 +166,7 @@ public class HopperTransfer implements Listener {
         return result;
     }
 
-    private Map<RecipeChoice, Integer> flatten(Recipe recipe) {
+    private static Map<RecipeChoice, Integer> flatten(Recipe recipe) {
         Map<RecipeChoice, Integer> result = new HashMap<>();
         if (recipe instanceof ShapedRecipe) {
             //shaped
@@ -170,7 +192,7 @@ public class HopperTransfer implements Listener {
     }
 
 
-    private int getRecipeIndex(Block block) {
+    private static int getRecipeIndex(Block block) {
         int result = 0;
         String[] recipes = Util.getHeldData(block);
 

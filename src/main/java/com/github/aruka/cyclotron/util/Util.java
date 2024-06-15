@@ -18,6 +18,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Util {
+
+    public static boolean isCyclotronCargo(@Nullable Block block) {
+        if (block == null) return false;
+        else if (!Cyclotron.CARGO_CONTAINER.contains(block.getType())) return false;
+        return block.hasMetadata(Cyclotron.CyclotronKey);
+    }
+
     public static @Nullable String[] getHeldData(@NotNull Block block) {
         if (!block.hasMetadata(Cyclotron.CyclotronKey)) return null;
         String data = block.getMetadata(Cyclotron.CyclotronKey).get(0).asString();
@@ -42,7 +49,7 @@ public class Util {
         return list.toArray(new String[0]);
     }
 
-    public static boolean isNullOrAir(ItemStack item) {
+    public static boolean isNullOrAir(@Nullable ItemStack item) {
         return item == null || item.getType().equals(Material.AIR);
     }
 
@@ -52,7 +59,7 @@ public class Util {
         return String.join(",", array);
     }
 
-    public static void replaceMetadata(Block block, MetadataValue value) {
+    public static void replaceMetadata(@NotNull Block block, @NotNull MetadataValue value) {
         replaceMetadataSpecifiedKey(block, Cyclotron.CyclotronKey, value);
     }
 

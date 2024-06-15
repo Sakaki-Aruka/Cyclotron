@@ -37,7 +37,7 @@ public class PlayerItemMove implements Listener {
     }
 
     private void withShift(InventoryClickEvent event) {
-        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) return;
+        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.isCancelled()) return;
         Inventory inventory = event.getInventory();
         ItemStack item = event.getCurrentItem();
         if (Util.isNullOrAir(item) || event.getClickedInventory() == null) return;

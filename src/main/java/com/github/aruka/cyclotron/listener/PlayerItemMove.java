@@ -31,13 +31,13 @@ public class PlayerItemMove implements Listener {
 
     @EventHandler
     public void onPlayerItemMove(InventoryClickEvent event) {
-        if (!ALLOWED_CLICK_TYPE.contains(event.getClick())) return;
+        if (!ALLOWED_CLICK_TYPE.contains(event.getClick()) || event.isCancelled()) return;
         if (event.isShiftClick()) withShift(event);
         else pure(event);
     }
 
     private void withShift(InventoryClickEvent event) {
-        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.isCancelled()) return;
+        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) return;
         Inventory inventory = event.getInventory();
         ItemStack item = event.getCurrentItem();
         if (Util.isNullOrAir(item) || event.getClickedInventory() == null) return;

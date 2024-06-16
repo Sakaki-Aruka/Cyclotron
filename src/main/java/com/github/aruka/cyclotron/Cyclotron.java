@@ -4,13 +4,13 @@ import com.github.aruka.cyclotron.command.Filter;
 
 import com.github.aruka.cyclotron.listener.ContainerBreak;
 import com.github.aruka.cyclotron.listener.ContainerClick;
+import com.github.aruka.cyclotron.listener.ContainerPlace;
 import com.github.aruka.cyclotron.listener.HopperTransfer;
 import com.github.aruka.cyclotron.listener.PlayerItemMove;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +70,7 @@ public final class Cyclotron extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ContainerBreak(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerItemMove(), this);
+        getServer().getPluginManager().registerEvents(new ContainerPlace(), this);
 
         getAllCraftingNamespace();
     }

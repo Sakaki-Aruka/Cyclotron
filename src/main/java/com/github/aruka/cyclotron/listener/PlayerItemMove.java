@@ -5,6 +5,7 @@ import com.github.aruka.cyclotron.util.Util;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -29,7 +30,7 @@ public class PlayerItemMove implements Listener {
             InventoryAction.PLACE_SOME
     );
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerItemMove(InventoryClickEvent event) {
         if (!ALLOWED_CLICK_TYPE.contains(event.getClick()) || event.isCancelled()) return;
         if (event.isShiftClick()) withShift(event);

@@ -73,12 +73,17 @@ public class Util {
         block.removeMetadata(Cyclotron.CyclotronIndexKey, Cyclotron.INSTANCE);
     }
 
-    public static void doubleChest(Block block) {
+    public static void doubleChest(Block block, boolean syncWithSource) {
         if (((Container) block.getState()).getInventory() instanceof DoubleChestInventory doubleInventory) {
             DoubleChest chest = doubleInventory.getHolder();
             Block[] blocks = getDoubleChest(chest.getLocation());
             int sourceIndex = Arrays.stream(blocks).map(Block::getLocation).toList().indexOf(block.getLocation());
             int clientIndex = sourceIndex == 0 ? 1 : 0;
+
+            if (!syncWithSource) {
+                sourceIndex = sourceIndex == 0 ? 1 : 0;
+                clientIndex = clientIndex == 0 ? 1 : 0;
+            }
             sync(blocks[sourceIndex], blocks[clientIndex]);
 
             Cyclotron.MetadataBlocks.add(blocks[0].getLocation());

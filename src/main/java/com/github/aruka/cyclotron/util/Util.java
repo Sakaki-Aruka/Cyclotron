@@ -80,6 +80,9 @@ public class Util {
             int sourceIndex = Arrays.stream(blocks).map(Block::getLocation).toList().indexOf(block.getLocation());
             int clientIndex = sourceIndex == 0 ? 1 : 0;
             sync(blocks[sourceIndex], blocks[clientIndex]);
+
+            Cyclotron.MetadataBlocks.add(blocks[0].getLocation());
+            Cyclotron.MetadataBlocks.add(blocks[1].getLocation());
         }
     }
 

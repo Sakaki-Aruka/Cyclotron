@@ -80,7 +80,9 @@ public class ContainerClick implements Listener {
 
         Util.replaceMetadata(container, new FixedMetadataValue(Cyclotron.INSTANCE, Util.convertFlat(newData)));
         Util.doubleChest(container);
+        Cyclotron.MetadataBlocks.add(container.getLocation());
         player.sendMessage(String.format("Successful to register '%s'.", query));
+
     }
 
     private void unregister(Block container, Player player) {
@@ -100,6 +102,7 @@ public class ContainerClick implements Listener {
             Util.doubleChest(container);
             player.sendMessage(String.format("Successful to unregister '%s'.", query));
             player.sendMessage("Now recipes='[]'.");
+            Cyclotron.MetadataBlocks.remove(container.getLocation());
             return;
         }
         String[] newData = new String[data.length - 1];

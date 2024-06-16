@@ -7,8 +7,10 @@ import com.github.aruka.cyclotron.listener.ContainerClick;
 import com.github.aruka.cyclotron.listener.HopperTransfer;
 import com.github.aruka.cyclotron.listener.PlayerItemMove;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,12 +25,14 @@ public final class Cyclotron extends JavaPlugin {
 
     public static Set<String> ALL_CRAFTING_RECIPES_NAMESPACE = new HashSet<>();
     public static Map<String, Recipe> NAME_RECIPE_MAP = new HashMap<>();
+    public static Set<Location> MetadataBlocks = new HashSet<>();
     public static Cyclotron INSTANCE;
     public static final int CLICK_EXPIRE_DURATION = 60; // seconds
 
     public static int FILTER_LIMIT = 5;
     public static final String CyclotronKey = "CyclotronJsonData";
     public static final String CyclotronIndexKey = "CyclotronIndex";
+    public static final String MetaDataFilePath = "./plugins/cyclotron/meta";
     public static final Set<Material> CARGO_CONTAINER = Set.of(
             Material.CHEST,
             Material.TRAPPED_CHEST,
@@ -58,6 +62,7 @@ public final class Cyclotron extends JavaPlugin {
         saveConfig();
         setInstance();
         SettingsLoad.readConfig();
+        SettingsLoad.loadMetaData();
         getCommand("cyclotron").setExecutor(new Filter());
         getCommand("cyclotron").setTabCompleter(new Filter());
         getServer().getPluginManager().registerEvents(new ContainerClick(), this);
@@ -72,6 +77,7 @@ public final class Cyclotron extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        SettingsLoad.saveMetaData();
     }
 
     private void setInstance() {

@@ -82,7 +82,7 @@ public class HopperTransfer implements Listener {
 
         int nextIndex = (startIndex + 1) % recipes.length;
         Util.replaceMetadataSpecifiedKey(block, Cyclotron.CyclotronIndexKey, new FixedMetadataValue(Cyclotron.INSTANCE, nextIndex));
-        Util.doubleChest(block);
+        Util.doubleChest(block, true);
 
         if (anyCraftable(block, destination)) {
             loop(block, destination);

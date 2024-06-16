@@ -79,7 +79,7 @@ public class ContainerClick implements Listener {
         newData[hold.length] = query;
 
         Util.replaceMetadata(container, new FixedMetadataValue(Cyclotron.INSTANCE, Util.convertFlat(newData)));
-        Util.doubleChest(container);
+        Util.doubleChest(container, true);
         Cyclotron.MetadataBlocks.add(container.getLocation());
         player.sendMessage(String.format("Successful to register '%s'.", query));
 
@@ -99,7 +99,7 @@ public class ContainerClick implements Listener {
         } else if (data.length == 1) {
             // oldData.contains(query) -> true, length = 1
             Util.blockDataClear(container);
-            Util.doubleChest(container);
+            Util.doubleChest(container, true);
             player.sendMessage(String.format("Successful to unregister '%s'.", query));
             player.sendMessage("Now recipes='[]'.");
             Cyclotron.MetadataBlocks.remove(container.getLocation());
@@ -113,7 +113,7 @@ public class ContainerClick implements Listener {
             index++;
         }
         Util.replaceMetadata(container, new FixedMetadataValue(Cyclotron.INSTANCE, Util.convertFlat(newData)));
-        Util.doubleChest(container);
+        Util.doubleChest(container, true);
         player.sendMessage(String.format("Successful to unregister '%s'.", query));
         player.sendMessage("Now recipes=" + Arrays.toString(newData));
     }

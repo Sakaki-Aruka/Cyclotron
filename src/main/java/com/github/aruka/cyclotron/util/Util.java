@@ -89,6 +89,7 @@ public class Util {
             Cyclotron.MetadataBlocks.add(blocks[0].getLocation());
             Cyclotron.MetadataBlocks.add(blocks[1].getLocation());
         }
+        block.getState().update();
     }
 
     private static void sync(Block source, Block client) {

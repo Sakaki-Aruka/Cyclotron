@@ -142,6 +142,22 @@ public class HopperTransfer implements Listener {
         Map<ItemStack, Integer> relation = getRelation(inventory);
         Map<RecipeChoice, Integer> flat = flatten(recipe);
         Set<RecipeChoice> passed = new HashSet<>();
+
+        boolean hasPlacableSpace = false;
+        Material resultType = recipe.getResult().getType();
+        for (ItemStack item : inventory.getContents()) {
+            if (Util.isNullOrAir(item)) {
+                hasPlacableSpace = true;
+                break;
+            } else if (!item.getType().equals(resultType)) continue;
+            int max = item.getType().getMaxStackSize();
+            if (item.getAmount() < max) {
+                hasPlacableSpace = true;
+                break;
+            }
+        }
+        if (!hasPlacableSpace) return false;
+
         for (Map.Entry<ItemStack, Integer> r : relation.entrySet()) {
             for (Map.Entry<RecipeChoice, Integer> f : flat.entrySet()) {
                 if (passed.contains(f.getKey())) continue;
